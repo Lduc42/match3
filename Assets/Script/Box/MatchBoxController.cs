@@ -2,9 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class MatchBoxController : MonoBehaviour
 {
+    [SerializeField]
+    SpriteRenderer warning;
+    public float fadeDuration = .5f;
+    public float minAlpha = 0.2f;
+    public float maxAlpha = 1.0f;
     public Transform[] slotsPosition;
 
     public List<GameObject> itemsMatchBox;
@@ -24,6 +30,7 @@ public class MatchBoxController : MonoBehaviour
         }
     }
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +45,7 @@ public class MatchBoxController : MonoBehaviour
 
     public void AddItemToBox(GameObject item)
     {
+        //if (itemsMatchBox.Count >= 7) return;
         item.GetComponent<MeshCollider>().enabled = false;
         for(int i = 0; i < itemsMatchBox.Count; i++)
         {
@@ -62,18 +70,26 @@ public class MatchBoxController : MonoBehaviour
     {
 
         ItemElement itemElement = item.GetComponent<ItemElement>();
-        item.transform.DOMove(slotsPosition[indexBox].position, 1f);
+        item.transform.DOMove(slotsPosition[indexBox].position, 1f).OnComplete(()=> {
+            ScaleDown(itemElement);
+        });
         yield return new WaitForSeconds(.3f);
-
-        ScaleDown(itemElement);
+        
+        
+        item.GetComponent<Outline>().OutlineWidth = 0;
         itemElement.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeRotation;
         itemElement.gameObject.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+
+        itemElement.SetDefaultRotation();
         //item.transform.DORotate(itemElement.originalRotation, .1f);
     }
 
     private void ScaleDown(ItemElement item)
     {
-        item.gameObject.transform.DOScale(item.originalScale, .2f);
+        item.gameObject.transform.DOScale(item.originalScale, .2f).OnComplete(()=> {
+            CheckMatchItem(item.ID);
+        });
+        
     }
 
     private void UpdateItemInBox()
@@ -84,14 +100,70 @@ public class MatchBoxController : MonoBehaviour
             ItemElement item = itemsMatchBox[i].GetComponent<ItemElement>();
             item.transform.DOMove(slotsPosition[i].position, .5f);
         }
+        CheckWarning();
     }
 
-    private void CheckMatchTriple()
+
+    public void CheckMatchItem(int id)
     {
-        int matchCount;
-        for(int i = 0; i < itemsMatchBox.Count; i++)
+        int match = 0;
+        foreach(GameObject obj in itemsMatchBox)
         {
-            
+            ItemElement item = obj.GetComponent<ItemElement>();
+            if(item.ID == id)
+            {
+                match++;
+            }
+        }
+        if(match >= 3)
+        {
+            int preLength = itemsMatchBox.Count;
+            Debug.Log("length " + preLength);
+            for(int i = itemsMatchBox.Count - 1; i >= 0; i--)
+            {
+                ItemElement itemObj = itemsMatchBox[i].GetComponent<ItemElement>();
+                if(itemObj.ID == id)
+                {
+                    itemObj.gameObject.transform.DOScale(.2f, .5f).OnComplete(() => {
+                        
+                        itemsMatchBox.Remove(itemObj.gameObject);
+                        Destroy(itemObj.gameObject);
+                        UpdateItemInBox();
+                    });
+                }
+            }
+        }
+
+        CheckWarning();
+    }
+
+    public void ActiveWarning(bool isActive)
+    {
+        if (isActive)
+        {
+            warning.enabled = true;
+            DOTween.Sequence()
+    .Append(warning.DOFade(maxAlpha, fadeDuration))
+    .AppendInterval(0.5f) // Dừng 0.5 giây
+    .Append(warning.DOFade(minAlpha, fadeDuration))
+    .SetLoops(-1);
+        }
+        else
+        {
+            warning.enabled = false;
+        }
+    }
+
+    public void CheckWarning()
+    {
+        if (itemsMatchBox.Count >= 6)
+        {
+            Debug.Log("warning");
+            ActiveWarning(true);
+        }
+        else
+        {
+            ActiveWarning(false);
         }
     }
 }

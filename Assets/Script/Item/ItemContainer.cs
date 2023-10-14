@@ -42,4 +42,16 @@ public class ItemContainer : MonoBehaviour
         item_container.Clear();
         item_container.AddRange(GetComponentsInChildren<ItemElement>());
     }
+
+    public ItemElement FindObjectByInstanceID(int instanceID)
+    {
+        foreach (ItemElement obj in item_container)
+        {
+            if (obj.ID == instanceID)
+            {
+                return obj; // Trả về GameObject nếu tìm thấy
+            }
+        }
+        return null; // Trả về null nếu không tìm thấyxx
+    }
 }

@@ -1,10 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class ItemElement : MonoBehaviour
 {
-    public int ID;
+    [SerializeField] private int id;
+    public int ID
+    {
+        get => id;
+        set => id = value;
+    }
+    public int SpawnedID { get; set; }
 
     public Vector3 originalRotation;
     public Vector3 originalScale;
@@ -24,5 +31,10 @@ public class ItemElement : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetDefaultRotation()
+    {
+        this.transform.DOLocalRotate(originalRotation, .2f);
     }
 }

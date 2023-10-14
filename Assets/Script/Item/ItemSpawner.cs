@@ -45,7 +45,7 @@ public class ItemSpawner : MonoBehaviour
         for(int i = 0; i < numberItem; i++)
         {
             GameObject obj = Instantiate(itemType, itemContainer.transform);
-            obj.GetComponent<ItemElement>().ID = indexSpawn;
+            obj.GetComponent<ItemElement>().SpawnedID = indexSpawn;
             SetRandomItemPosition(obj);
             indexSpawn++;
 

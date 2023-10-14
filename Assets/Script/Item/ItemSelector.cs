@@ -62,6 +62,7 @@ public class ItemSelector : MonoBehaviour
             if (hit.collider.gameObject.tag == "Item")
             {
                 GameObject objectHit = OnSelectItem(hit);
+                Debug.Log(objectHit.name);
                 return objectHit;
                 // Collision detected between the mouse and the 3D model
                 Debug.Log("Collision with " + objectHit.name);
@@ -72,7 +73,7 @@ public class ItemSelector : MonoBehaviour
                 foreach(GameObject obj in MatchBoxController.Instance.itemsMatchBox)
                 {
                     ItemElement item_element = obj.GetComponent<ItemElement>();
-                    if(item_element.ID == currentSelectedItem.ID)
+                    if(item_element.SpawnedID == currentSelectedItem.SpawnedID)
                     {
                         return null;
                     }
@@ -91,7 +92,7 @@ public class ItemSelector : MonoBehaviour
         GameObject objectHit = hit.collider.gameObject;
         Vector3 objectHitPosition = objectHit.transform.position;
         ItemElement item = objectHit.GetComponent<ItemElement>();
-        currentItemIndex = item.ID;
+        currentItemIndex = item.SpawnedID;
 
         if(preItemIndex != currentItemIndex)
         {
@@ -99,13 +100,18 @@ public class ItemSelector : MonoBehaviour
 
             foreach(GameObject obj in MatchBoxController.Instance.itemsMatchBox)
             {
-                if(obj.GetComponent<ItemElement>().ID == preItemIndex)
+                if(obj.GetComponent<ItemElement>().SpawnedID == preItemIndex)
                 {
                     return objectHit;
                 }
             }
             if(preItemIndex != 999)
-            DropItem(GameController.Instance.itemContainer.item_container[preItemIndex]);
+            {
+                ItemElement itemDrop = GameController.Instance.itemContainer.FindObjectByInstanceID(preItemIndex);
+                if(itemDrop)
+                DropItem(itemDrop);
+            }
+            
             preItemIndex = currentItemIndex;
         }
         else
@@ -130,6 +136,7 @@ public class ItemSelector : MonoBehaviour
 
     private void DropItem(ItemElement item)
     {
+        if (!item) Debug.Log("item null");
         item.transform.DOScale(originalItemScale, .1f);
         item.GetComponent<Rigidbody>().useGravity = true;
         item.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
