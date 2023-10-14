@@ -130,22 +130,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 244703794, guid: 241f18c3ea0870346a5c7e8917cd4dcc, type: 3}
-      propertyPath: warning
-      value: 
-      objectReference: {fileID: 467678164}
-    - target: {fileID: 244703794, guid: 241f18c3ea0870346a5c7e8917cd4dcc, type: 3}
-      propertyPath: fadeDuration
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 244703794, guid: 241f18c3ea0870346a5c7e8917cd4dcc, type: 3}
-      propertyPath: NumberMatchBarSlot
-      value: 7
-      objectReference: {fileID: 0}
-    - target: {fileID: 244703794, guid: 241f18c3ea0870346a5c7e8917cd4dcc, type: 3}
-      propertyPath: slotsPosition.Array.size
-      value: 7
-      objectReference: {fileID: 0}
     - target: {fileID: 2436004765102270871, guid: 241f18c3ea0870346a5c7e8917cd4dcc, type: 3}
       propertyPath: m_Name
       value: Match Box
@@ -524,11 +508,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19631305a58910a4d9d15ca810ada914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!212 &467678164 stripped
-SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 5729784298944898994, guid: 241f18c3ea0870346a5c7e8917cd4dcc, type: 3}
-  m_PrefabInstance: {fileID: 83145783}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &633668617
 GameObject:
   m_ObjectHideFlags: 0
