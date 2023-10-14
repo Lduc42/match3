@@ -8,6 +8,7 @@ public class MatchBoxController : MonoBehaviour
 {
     [SerializeField]
     SpriteRenderer warning;
+    [SerializeField] private int NumberMatchBarSlot;
     public float fadeDuration = .5f;
     public float minAlpha = 0.2f;
     public float maxAlpha = 1.0f;
@@ -47,6 +48,7 @@ public class MatchBoxController : MonoBehaviour
     {
         //if (itemsMatchBox.Count >= 7) return;
         item.GetComponent<MeshCollider>().enabled = false;
+        item.GetComponent<Rigidbody>().useGravity = false;
         for(int i = 0; i < itemsMatchBox.Count; i++)
         {
             if(itemsMatchBox[i].name == item.name)
@@ -132,8 +134,9 @@ public class MatchBoxController : MonoBehaviour
                     });
                 }
             }
+            
         }
-
+        GameController.Instance.CheckStatusGame();
         CheckWarning();
     }
 
@@ -165,5 +168,10 @@ public class MatchBoxController : MonoBehaviour
         {
             ActiveWarning(false);
         }
+    }
+
+    public bool CanNotFill()
+    {
+        return itemsMatchBox.Count >= NumberMatchBarSlot;
     }
 }

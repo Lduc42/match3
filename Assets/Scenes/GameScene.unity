@@ -139,6 +139,10 @@ PrefabInstance:
       value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 244703794, guid: 241f18c3ea0870346a5c7e8917cd4dcc, type: 3}
+      propertyPath: NumberMatchBarSlot
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 244703794, guid: 241f18c3ea0870346a5c7e8917cd4dcc, type: 3}
       propertyPath: slotsPosition.Array.size
       value: 7
       objectReference: {fileID: 0}
@@ -360,6 +364,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentItemIndex: 0
   preItemIndex: 999
+  currentItem: {fileID: 0}
+  preItem: {fileID: 0}
   originalItemScale: {x: 0, y: 0, z: 0}
 --- !u!4 &111078611
 Transform:

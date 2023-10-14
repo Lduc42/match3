@@ -54,4 +54,9 @@ public class ItemContainer : MonoBehaviour
         }
         return null; // Trả về null nếu không tìm thấyxx
     }
+
+    public bool IsContainerEmpty()
+    {
+        return item_container.Count <= 0;
+    }
 }

@@ -7,6 +7,9 @@ public class ItemSelector : MonoBehaviour
     public int preItemIndex = 999;
     private bool isDragging;
 
+    public ItemElement currentItem;
+    public ItemElement preItem;
+
     [HideInInspector] public Vector3 originalItemScale;
 
     public static ItemSelector Instance { get; set; }
@@ -78,7 +81,8 @@ public class ItemSelector : MonoBehaviour
                         return null;
                     }
                 }
-                DropItem(currentSelectedItem);
+                if (preItem) DropItem(preItem);
+                //DropItem(currentSelectedItem);
                 /*Debug.Log("scale this");*/
                 preItemIndex = 999;
             }
@@ -94,7 +98,10 @@ public class ItemSelector : MonoBehaviour
         ItemElement item = objectHit.GetComponent<ItemElement>();
         currentItemIndex = item.SpawnedID;
 
-        if(preItemIndex != currentItemIndex)
+
+        preItem = currentItem;
+        currentItem = item;
+        if(currentItem && preItem && currentItem.SpawnedID != preItem.SpawnedID || !preItem)
         {
             PickUpItem(objectHit, objectHitPosition);
 
@@ -105,12 +112,14 @@ public class ItemSelector : MonoBehaviour
                     return objectHit;
                 }
             }
-            if(preItemIndex != 999)
-            {
-                ItemElement itemDrop = GameController.Instance.itemContainer.FindObjectByInstanceID(preItemIndex);
-                if(itemDrop)
-                DropItem(itemDrop);
-            }
+            //if(preItemIndex != 999)
+            //{
+            //    ItemElement itemDrop = GameController.Instance.itemContainer.FindObjectByInstanceID(preItemIndex);
+            //    if(itemDrop)
+            //    DropItem(itemDrop);
+            //}
+            if(preItem)
+            DropItem(preItem);
             
             preItemIndex = currentItemIndex;
         }

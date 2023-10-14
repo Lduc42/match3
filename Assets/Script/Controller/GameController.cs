@@ -34,4 +34,25 @@ public class GameController : MonoBehaviour
         
     }
 
+    public void CheckWin()
+    {
+        if (itemContainer.IsContainerEmpty())
+        {
+            Debug.Log("win");
+        }
+    }
+
+    public void CheckLose()
+    {
+        if (MatchBoxController.Instance.CanNotFill())
+        {
+            Debug.Log("lose");
+        }
+    }
+
+    public void CheckStatusGame()
+    {
+        CheckWin();
+        CheckLose();
+    }
 }

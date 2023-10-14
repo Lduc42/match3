@@ -260,7 +260,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   warning: {fileID: 5729784298944898994}
-  fadeDuration: 1
+  NumberMatchBarSlot: 7
+  fadeDuration: 0.5
   minAlpha: 0.2
   maxAlpha: 1
   slotsPosition:
