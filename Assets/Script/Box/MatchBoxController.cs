@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
+using System.Linq;
 
 public class MatchBoxController : MonoBehaviour
 {
@@ -73,7 +74,7 @@ public class MatchBoxController : MonoBehaviour
     {
 
         ItemElement itemElement = item.GetComponent<ItemElement>();
-        item.transform.DOMove(slotsPosition[indexBox].position, 1f).OnComplete(()=> {
+        item.transform.DOMove(slotsPosition[indexBox].position, .6f).OnComplete(()=> {
             ScaleDown(itemElement);
         });
         yield return new WaitForSeconds(.3f);
@@ -92,7 +93,6 @@ public class MatchBoxController : MonoBehaviour
         item.gameObject.transform.DOScale(item.originalScale, .2f).OnComplete(()=> {
             CheckMatchItem(item.ID);
         });
-        
     }
 
     private void UpdateItemInBox()
@@ -110,6 +110,10 @@ public class MatchBoxController : MonoBehaviour
     public void CheckMatchItem(int id)
     {
         int match = 0;
+        int firstSpawnedID = 0;
+        int centerSpawnedID = 0;
+        int lastSpawnedID = 0;
+        Vector3 targetMove = Vector3.zero;
         foreach(GameObject obj in itemsMatchBox)
         {
             ItemElement item = obj.GetComponent<ItemElement>();
@@ -117,6 +121,14 @@ public class MatchBoxController : MonoBehaviour
             {
                 match++;
             }
+
+            if (match == 1) firstSpawnedID = item.SpawnedID;
+            if (match == 2) {
+                centerSpawnedID = item.SpawnedID;
+                targetMove = item.transform.position;
+            }
+            if (match == 3) lastSpawnedID = item.SpawnedID;
+            
         }
         if(match >= 3)
         {
@@ -127,17 +139,24 @@ public class MatchBoxController : MonoBehaviour
                 ItemElement itemObj = itemsMatchBox[i].GetComponent<ItemElement>();
                 if(itemObj.ID == id)
                 {
-                    itemObj.gameObject.transform.DOScale(.2f, .5f).OnComplete(() => {
-                        
-                        itemsMatchBox.Remove(itemObj.gameObject);
-                        Debug.Log("remove item");
-                        Destroy(itemObj.gameObject);
-                        UpdateItemInBox();
-                        GameController.Instance.CheckStatusGame();
+                    itemObj.gameObject.transform.DOMove(targetMove, .2f).OnComplete(() =>
+                    {
+                        if (itemObj.SpawnedID == centerSpawnedID)
+                            itemObj.ShowMatchVfx(new Vector3(targetMove.x, targetMove.y,targetMove.z));
+                        itemObj.gameObject.transform.DOScale(.2f, .5f).OnComplete(() =>
+                        {
+                            
+                            itemsMatchBox.Remove(itemObj.gameObject);
+                            ItemContainer.Instance.item_container.Remove(itemObj);
+                            Debug.Log("remove item");
+                            Destroy(itemObj.gameObject);
+                            UpdateItemInBox();
+                            GameController.Instance.CheckStatusGame();
+                        });
                     });
+
                 }
             }
-            
         }
         else
         {

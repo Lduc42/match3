@@ -36,6 +36,7 @@ public class GameController : MonoBehaviour
 
     public void CheckWin()
     {
+        Debug.Log("count "+itemContainer.item_container.Count);
         if (itemContainer.IsContainerEmpty())
         {
             Debug.Log("win");

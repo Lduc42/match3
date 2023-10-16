@@ -11,6 +11,7 @@ public class ItemElement : MonoBehaviour
         get => id;
         set => id = value;
     }
+    [SerializeField] private GameObject matchVfx;
     public int SpawnedID { get; set; }
 
     public Vector3 originalRotation;
@@ -36,5 +37,10 @@ public class ItemElement : MonoBehaviour
     public void SetDefaultRotation()
     {
         this.transform.DOLocalRotate(originalRotation, .2f);
+    }
+
+    public void ShowMatchVfx(Vector3 targetPoint)
+    {
+        Instantiate(matchVfx, targetPoint, Quaternion.identity, transform.parent);
     }
 }
