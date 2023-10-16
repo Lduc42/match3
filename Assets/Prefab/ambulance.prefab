@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6507824729838178252}
   - component: {fileID: 6507824729838178251}
   - component: {fileID: 1293505908516130447}
+  - component: {fileID: 7070174597639372751}
   m_Layer: 9
   m_Name: ambulance
   m_TagString: Item
@@ -131,3 +132,21 @@ MonoBehaviour:
   id: 2
   originalRotation: {x: 0, y: -90, z: 0}
   originalScale: {x: 1.5, y: 1.5, z: 1.5}
+--- !u!114 &7070174597639372751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6509301597792073393}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 0
+  outlineColor: {r: 1, g: 0.9098039, b: 0, a: 1}
+  outlineWidth: 2
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

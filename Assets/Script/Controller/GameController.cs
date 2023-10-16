@@ -39,6 +39,7 @@ public class GameController : MonoBehaviour
         if (itemContainer.IsContainerEmpty())
         {
             Debug.Log("win");
+            UIController.Instance.ActiveWinPopup(true);
         }
     }
 
@@ -47,6 +48,7 @@ public class GameController : MonoBehaviour
         if (MatchBoxController.Instance.CanNotFill())
         {
             Debug.Log("lose");
+            UIController.Instance.ActiveLosePopup(true);
         }
     }
 

@@ -5,9 +5,9 @@ using UnityEngine;
 public class ItemSpawner : MonoBehaviour
 {
     [Header ("Item Data:")]
-    [SerializeField] private ItemListConfig itemList;
+    [SerializeField] private SOLevelData itemList;
     [SerializeField] private GameObject itemContainer;
-    [SerializeField] private List<ItemSpawnConfig> itemsType;
+    [SerializeField] private List<SpawnData> itemsType;
 
     [Header("Spawn Position:")]
     [SerializeField] protected float spawnXLimitPosition;
@@ -17,13 +17,13 @@ public class ItemSpawner : MonoBehaviour
     
     private void OnEnable()
     {
-        itemsType = itemList.itemTypes;
+        //itemsType = itemList.itemTypes;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        SpawnListItem(itemsType);
+        //SpawnListItem(itemsType);
     }
 
     // Update is called once per frame
@@ -32,7 +32,7 @@ public class ItemSpawner : MonoBehaviour
         
     }
 
-    protected void SpawnListItem(List<ItemSpawnConfig> items)
+    public void SpawnListItem(List<SpawnData> items)
     {
         for(int i = 0; i < items.Count; i++)
         {

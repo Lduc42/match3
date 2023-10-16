@@ -42,6 +42,7 @@ public class ItemSelector : MonoBehaviour
             if(obj != null)
             {
                 MatchBoxController.Instance.AddItemToBox(obj);
+                currentItem = null;
             }
         }
 
@@ -72,15 +73,15 @@ public class ItemSelector : MonoBehaviour
             }
             else
             {
-                ItemElement currentSelectedItem = ItemContainer.Instance.item_container[currentItemIndex].gameObject.GetComponent<ItemElement>();
-                foreach(GameObject obj in MatchBoxController.Instance.itemsMatchBox)
-                {
-                    ItemElement item_element = obj.GetComponent<ItemElement>();
-                    if(item_element.SpawnedID == currentSelectedItem.SpawnedID)
-                    {
-                        return null;
-                    }
-                }
+                //ItemElement currentSelectedItem = ItemContainer.Instance.item_container[currentItemIndex].gameObject.GetComponent<ItemElement>();
+                //foreach (GameObject obj in MatchBoxController.Instance.itemsMatchBox)
+                //{
+                //    ItemElement item_element = obj.GetComponent<ItemElement>();
+                //    if (item_element.SpawnedID == currentSelectedItem.SpawnedID)
+                //    {
+                //        return null;
+                //    }
+                //}
                 if (preItem) DropItem(preItem);
                 //DropItem(currentSelectedItem);
                 /*Debug.Log("scale this");*/
@@ -97,11 +98,14 @@ public class ItemSelector : MonoBehaviour
         Vector3 objectHitPosition = objectHit.transform.position;
         ItemElement item = objectHit.GetComponent<ItemElement>();
         currentItemIndex = item.SpawnedID;
-
-
+        if (currentItem && currentItem.gameObject.GetInstanceID() == item.gameObject.GetInstanceID()) {
+             return currentItem.gameObject;
+        } 
         preItem = currentItem;
         currentItem = item;
-        if(currentItem && preItem && currentItem.SpawnedID != preItem.SpawnedID || !preItem)
+
+
+        if (currentItem && preItem && currentItem.SpawnedID != preItem.SpawnedID || !preItem)
         {
             PickUpItem(objectHit, objectHitPosition);
 
@@ -118,7 +122,9 @@ public class ItemSelector : MonoBehaviour
             //    if(itemDrop)
             //    DropItem(itemDrop);
             //}
-            if(preItem)
+            
+
+            if (preItem)
             DropItem(preItem);
             
             preItemIndex = currentItemIndex;
@@ -136,6 +142,7 @@ public class ItemSelector : MonoBehaviour
         if(objectHit.transform.position.y < 1) objectHit.transform.DOMoveY(objectHitPosition.y + 3f, .2f);
 
         Rigidbody rb = objectHit.GetComponent<Rigidbody>();
+        objectHit.GetComponent<Outline>().enabled = true;
         objectHit.GetComponent<Rigidbody>().useGravity = false;
         objectHit.GetComponent<Rigidbody>().freezeRotation = true;
         rb.constraints = RigidbodyConstraints.FreezePosition;
@@ -146,6 +153,7 @@ public class ItemSelector : MonoBehaviour
     private void DropItem(ItemElement item)
     {
         if (!item) Debug.Log("item null");
+        item.gameObject.GetComponent<Outline>().enabled = false;
         item.transform.DOScale(originalItemScale, .1f);
         item.GetComponent<Rigidbody>().useGravity = true;
         item.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;

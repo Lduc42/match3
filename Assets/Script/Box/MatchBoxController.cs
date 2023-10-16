@@ -59,6 +59,7 @@ public class MatchBoxController : MonoBehaviour
                 return;
             }
         }
+        if(item.GetComponent<Outline>())
         item.GetComponent<Outline>().enabled = false;
         itemsMatchBox.Add(item);
         //MoveObjectToBox(item, itemsMatchBox.Count - 1);
@@ -129,14 +130,20 @@ public class MatchBoxController : MonoBehaviour
                     itemObj.gameObject.transform.DOScale(.2f, .5f).OnComplete(() => {
                         
                         itemsMatchBox.Remove(itemObj.gameObject);
+                        Debug.Log("remove item");
                         Destroy(itemObj.gameObject);
                         UpdateItemInBox();
+                        GameController.Instance.CheckStatusGame();
                     });
                 }
             }
             
         }
-        GameController.Instance.CheckStatusGame();
+        else
+        {
+            GameController.Instance.CheckStatusGame();
+        }
+        
         CheckWarning();
     }
 
