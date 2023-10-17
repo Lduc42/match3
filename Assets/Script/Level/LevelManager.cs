@@ -16,13 +16,18 @@ public class LevelManager : Singleton<LevelManager>
     // Start is called before the first frame update
     void Start()
     {
-        LoadLevel(UserDatas.Instance.GetLevelData().currentLevel);
+        LoadLevel(UserDatas.Instance.UserLevel);
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void OnApplicationQuit()
+    {
+        Debug.Log("level quit save " + UserDatas.Instance.UserLevel);
     }
 
     public void InitLevelData(int level)
@@ -42,6 +47,7 @@ public class LevelManager : Singleton<LevelManager>
 
     public void LoadNextLevel(){
         UserDatas.Instance.UserLevel += 1;
+        
         LoadLevel(UserDatas.Instance.UserLevel);
         UIController.Instance.UpdateLevelHub();
     }

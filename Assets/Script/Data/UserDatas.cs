@@ -7,20 +7,13 @@ public class UserDatas : Singleton<UserDatas>
 {
     private const string DataKey = "UserData";
 
-    [Serializable]
+    [Serializable] 
     private class UserData
     {
-        public Level LevelUserData = new();
+
+        public int currentLevel = 0;
     }
 
-    public class Level
-    {
-        public int currentLevel;
-        public Level()
-        {
-            currentLevel = 0;
-        }
-    }
 
     #region Process File
 
@@ -34,23 +27,23 @@ public class UserDatas : Singleton<UserDatas>
     {
         get
         {
-            return dataLocal.LevelUserData.currentLevel;
+            return dataLocal.currentLevel;
         }
         set
         {
-            dataLocal.LevelUserData.currentLevel = value;
+            dataLocal.currentLevel = value;
+            Debug.Log("level save " + dataLocal.currentLevel);
             SaveLocal();
+            Debug.Log("level : " + UserLevel);
         }
     }
 
-    public Level GetLevelData()
-    {
-        return dataLocal.LevelUserData;
-    }
+  
 
     public void SetLevelUser(int levelID)
     {
-        dataLocal.LevelUserData.currentLevel = levelID;
+        dataLocal.currentLevel = levelID;
+        
         SaveLocal();
     }
 
@@ -73,13 +66,16 @@ public class UserDatas : Singleton<UserDatas>
         {
             if (PlayerPrefs.HasKey(DataKey))
             {
-                var jsonString = PlayerPrefs.GetString(DataKey);
+                var jsonString = PlayerPrefs.GetString(DataKey.ToString());
                 dataLocal = JsonUtility.FromJson<UserData>(jsonString);
+                
                 Debug.Log("Data Load : " + jsonString);
+                Debug.Log("load level"+dataLocal.currentLevel);
             }
             else
             {
                 dataLocal = new UserData();
+                dataLocal.currentLevel = 0;
                 RequestSave();
             }
         }
@@ -100,7 +96,9 @@ public class UserDatas : Singleton<UserDatas>
         try
         {
             var jsonString = JsonUtility.ToJson(dataLocal);
+            
             PlayerPrefs.SetString(DataKey, jsonString);
+            Debug.Log(dataLocal.currentLevel);
             Debug.Log("data save : " + jsonString);
             PlayerPrefs.Save();
 
